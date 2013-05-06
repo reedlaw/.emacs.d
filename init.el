@@ -7,15 +7,21 @@
 ;; From http://blog.zhengdong.me/2012/03/14/how-i-manage-emacs-packages/
 (package-initialize)
 (add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/"))
+             '("marmalade" . "http://marmalade-repo.org/packages/") t)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (require 'cl)
 ;; Guarantee all packages are installed on start
 (defvar packages-list
   '(ag
     coffee-mode
+    helm
+    jump
     key-chord
     markdown-mode
-    multiple-cursors)
+    multiple-cursors
+    projectile
+    rinari)
   "List of packages needs to be installed at launch")
 
 (defun has-package-not-installed ()
@@ -43,7 +49,16 @@
 (add-to-list 'auto-mode-alist '(".gemspec$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Gemfile$" . ruby-mode))
 
+(global-auto-revert-mode)
+
+(ido-mode t)
+
 (load-theme 'tango-dark)
+
+(projectile-global-mode)
+
+(setq inhibit-startup-message t)
+(setq projectile-enable-caching t)
 
 (tool-bar-mode -1)
 
@@ -72,9 +87,12 @@
 (global-set-key (kbd "C-M-m") 'mc/mark-more-like-this)
 (global-set-key (kbd "C-M-SPC") 'set-rectangular-region-anchor)
 (global-set-key (kbd "C-c n") 'cleanup-buffer)
+(global-set-key (kbd "C-c h") 'helm-mini)
 
 (key-chord-mode 1)
 (key-chord-define-global "hj" 'undo)
+
+(windmove-default-keybindings 'shift)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;

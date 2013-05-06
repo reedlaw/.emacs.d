@@ -9,3 +9,4 @@ swank
 emms
 *.elc
 .yas-compiled-snippets.el
+/projectile*
