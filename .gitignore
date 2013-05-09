@@ -1,6 +1,7 @@
 auto-save-list
 backups
 *~
+.mc-lists.el
 .places
 session.*
 tramp
@@ -10,3 +11,4 @@ emms
 *.elc
 .yas-compiled-snippets.el
 /projectile*
+url/

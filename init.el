@@ -16,12 +16,16 @@
   '(ag
     coffee-mode
     helm
+    helm-projectile
     jump
     key-chord
+    magit
     markdown-mode
     multiple-cursors
     projectile
-    rinari)
+    rinari
+		scss-mode
+    wrap-region)
   "List of packages needs to be installed at launch")
 
 (defun has-package-not-installed ()
@@ -44,10 +48,14 @@
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(add-hook 'ruby-mode-hook 'wrap-region-mode)
+(add-hook 'scss-mode-hook 'flymake-mode)
 (add-to-list 'auto-mode-alist '(".rake$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Rakefile$" . ruby-mode))
 (add-to-list 'auto-mode-alist '(".gemspec$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Gemfile$" . ruby-mode))
+(add-to-list 'auto-mode-alist '(".scss$" . scss-mode))
+(add-to-list 'auto-mode-alist '(".scss.erb$" . scss-mode))
 
 (global-auto-revert-mode)
 
@@ -57,8 +65,13 @@
 
 (projectile-global-mode)
 
+(setq-default tab-width 2)
+(setq-default indent-tabs-mode nil)
+
 (setq inhibit-startup-message t)
+(setq js-indent-level 2)
 (setq projectile-enable-caching t)
+(setq scss-compile-at-save nil)
 
 (tool-bar-mode -1)
 
@@ -81,13 +94,15 @@
 (global-set-key (kbd "C-c r") 'replace-string)
 (global-set-key (kbd "C-c d") 'remove-dos-eol)
 (global-set-key (kbd "C-x C-b") 'bs-show)
-(global-set-key (kbd "C-t") 'switch-to-terminal)
+(global-set-key (kbd "C-c t") 'projectile-find-file)
+(global-set-key (kbd "C-t") 'helm-projectile)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-M-m") 'mc/mark-more-like-this)
 (global-set-key (kbd "C-M-SPC") 'set-rectangular-region-anchor)
 (global-set-key (kbd "C-c n") 'cleanup-buffer)
 (global-set-key (kbd "C-c h") 'helm-mini)
+(global-set-key (kbd "M-/") 'hippie-expand)
 
 (key-chord-mode 1)
 (key-chord-define-global "hj" 'undo)
