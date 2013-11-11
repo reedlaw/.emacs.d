@@ -15,6 +15,7 @@
 (defvar packages-list
   '(ag
     coffee-mode
+    go-mode
     helm
     helm-projectile
     jump
@@ -24,6 +25,7 @@
     multiple-cursors
     projectile
     rinari
+    ruby-refactor
 		scss-mode
     wrap-region)
   "List of packages needs to be installed at launch")
@@ -48,6 +50,7 @@
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(add-hook 'ruby-mode-hook 'ruby-refactor-mode-launch)
 (add-hook 'ruby-mode-hook 'wrap-region-mode)
 (add-hook 'scss-mode-hook 'flymake-mode)
 (add-to-list 'auto-mode-alist '(".rake$" . ruby-mode))
@@ -56,6 +59,15 @@
 (add-to-list 'auto-mode-alist '("Gemfile$" . ruby-mode))
 (add-to-list 'auto-mode-alist '(".scss$" . scss-mode))
 (add-to-list 'auto-mode-alist '(".scss.erb$" . scss-mode))
+(add-to-list 'auto-mode-alist '(".sass$" . scss-mode))
+(add-to-list 'auto-mode-alist '(".sass.erb$" . scss-mode))
+
+(setq backup-directory-alist '(("." . "~/.saves")))
+(setq backup-by-copying t)
+(setq delete-old-versions t
+  kept-new-versions 6
+  kept-old-versions 2
+  version-control t)
 
 (global-auto-revert-mode)
 
@@ -72,6 +84,9 @@
 (setq js-indent-level 2)
 (setq projectile-enable-caching t)
 (setq scss-compile-at-save nil)
+
+(setq comment-auto-fill-only-comments 1)
+(setq-default auto-fill-function 'do-auto-fill)
 
 (tool-bar-mode -1)
 
@@ -101,6 +116,7 @@
 (global-set-key (kbd "C-M-m") 'mc/mark-more-like-this)
 (global-set-key (kbd "C-M-SPC") 'set-rectangular-region-anchor)
 (global-set-key (kbd "C-c n") 'cleanup-buffer)
+(global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c h") 'helm-mini)
 (global-set-key (kbd "M-/") 'hippie-expand)
 
@@ -235,3 +251,15 @@ Including indent-buffer, which should not be called automatically on save."
   (interactive)
   (cleanup-buffer-safe)
   (indent-buffer))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-agenda-files (quote ("~/Documents/creation/main.org"))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
