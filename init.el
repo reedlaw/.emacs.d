@@ -15,6 +15,7 @@
 (defvar packages-list
   '(ag
     coffee-mode
+    flycheck
     go-mode
     helm
     helm-projectile
@@ -53,6 +54,7 @@
 (add-hook 'ruby-mode-hook 'ruby-refactor-mode-launch)
 (add-hook 'ruby-mode-hook 'wrap-region-mode)
 (add-hook 'scss-mode-hook 'flymake-mode)
+(add-hook 'after-init-hook #'global-flycheck-mode)
 (add-to-list 'auto-mode-alist '(".rake$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Rakefile$" . ruby-mode))
 (add-to-list 'auto-mode-alist '(".gemspec$" . ruby-mode))
