@@ -27,7 +27,9 @@
     projectile
     rinari
     ruby-refactor
+    rspec-mode
 		scss-mode
+    slim-mode
     wrap-region)
   "List of packages needs to be installed at launch")
 
