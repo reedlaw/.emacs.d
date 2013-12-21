@@ -17,15 +17,11 @@
     coffee-mode
     flycheck
     go-mode
-    helm
-    helm-projectile
     jump
     key-chord
     magit
     markdown-mode
     multiple-cursors
-    projectile
-    rinari
     ruby-refactor
     rspec-mode
 		scss-mode
@@ -78,21 +74,29 @@
 (ido-mode t)
 
 (load-theme 'tango-dark)
-
-(projectile-global-mode)
-
+(powerline-default-theme)
+(setq powerline-color1 "#073642")
+(setq powerline-color2 "#002b36")
+(set-face-attribute 'mode-line nil
+                    :foreground "#fdf6e3"
+                    :background "#2aa198"
+                    :box nil)
+(set-face-attribute 'mode-line-inactive nil
+                    :box nil)
 (setq-default tab-width 2)
 (setq-default indent-tabs-mode nil)
 
 (setq inhibit-startup-message t)
 (setq js-indent-level 2)
-(setq projectile-enable-caching t)
 (setq scss-compile-at-save nil)
 
 (setq comment-auto-fill-only-comments 1)
 (setq-default auto-fill-function 'do-auto-fill)
 
 (tool-bar-mode -1)
+
+(setq rspec-use-bundler-when-possible 1)
+(setq rspec-use-rake-when-possible nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -113,8 +117,6 @@
 (global-set-key (kbd "C-c r") 'replace-string)
 (global-set-key (kbd "C-c d") 'remove-dos-eol)
 (global-set-key (kbd "C-x C-b") 'bs-show)
-(global-set-key (kbd "C-c t") 'projectile-find-file)
-(global-set-key (kbd "C-t") 'helm-projectile)
 (global-set-key (kbd "C-M-SPC") 'set-rectangular-region-anchor)
 (global-set-key (kbd "C-c n") 'cleanup-buffer)
 (global-set-key (kbd "C-c l") 'org-store-link)
