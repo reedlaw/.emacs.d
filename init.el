@@ -17,6 +17,8 @@
     coffee-mode
     flycheck
     go-mode
+    helm
+    helm-ls-git
     jump
     key-chord
     magit
@@ -24,7 +26,7 @@
     multiple-cursors
     ruby-refactor
     rspec-mode
-		scss-mode
+    scss-mode
     slim-mode
     wrap-region)
   "List of packages needs to be installed at launch")
@@ -65,11 +67,12 @@
 (setq backup-directory-alist '(("." . "~/.saves")))
 (setq backup-by-copying t)
 (setq delete-old-versions t
-  kept-new-versions 6
-  kept-old-versions 2
-  version-control t)
+      kept-new-versions 6
+      kept-old-versions 2
+      version-control t)
 
 (global-auto-revert-mode)
+(global-linum-mode t)
 
 (ido-mode t)
 
@@ -125,8 +128,9 @@
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "M-RET") 'complete-tag)
+(global-set-key (kbd "C-c t") 'helm-ls-git-ls)
 
-; remappings, from http://emacsredux.com/blog/2013/09/25/removing-key-bindings-from-minor-mode-keymaps/
+                                        ; remappings, from http://emacsredux.com/blog/2013/09/25/removing-key-bindings-from-minor-mode-keymaps/
 (eval-after-load "inf-ruby"
   '(define-key inf-ruby-minor-mode-map (kbd "C-c C-r") nil))
 
@@ -215,6 +219,14 @@ or nil if not found."
     (message "Loading tags file: %s" my-tags-file)
     (visit-tags-table my-tags-file)))
 
+;; from http://www.emacswiki.org/emacs/BuildTags#toc4
+(setq path-to-ctags "/usr/bin/ctags")
+(defun create-tags (dir-name)
+  "Create tags file."
+  (interactive "DDirectory: ")
+  (eshell-command
+   (format "find %s -type f -name \"*.[ch]\" | etags -" dir-name)))
+
 ;; from http://superuser.com/a/176629
 (defun dired-do-command (command)
   "Run COMMAND on marked files. Any files not already open will be opened.
@@ -282,4 +294,3 @@ Including indent-buffer, which should not be called automatically on save."
   (interactive)
   (cleanup-buffer-safe)
   (indent-buffer))
-
