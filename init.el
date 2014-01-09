@@ -13,8 +13,13 @@
 (require 'cl)
 ;; Guarantee all packages are installed on start
 (defvar packages-list
-  '(ag
+  '(ac-etags
+    ag
+    auto-complete
     coffee-mode
+    eproject
+    etags-table
+    etags-select
     flycheck
     go-mode
     helm
@@ -51,10 +56,12 @@
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(menu-bar-mode -1)
+
 (add-hook 'ruby-mode-hook 'ruby-refactor-mode-launch)
 (add-hook 'ruby-mode-hook 'wrap-region-mode)
 (add-hook 'scss-mode-hook 'flymake-mode)
-(add-hook 'after-init-hook #'global-flycheck-mode)
+(add-hook 'after-init-hook 'global-flycheck-mode)
 (add-to-list 'auto-mode-alist '(".rake$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Rakefile$" . ruby-mode))
 (add-to-list 'auto-mode-alist '(".gemspec$" . ruby-mode))
@@ -101,6 +108,22 @@
 (setq rspec-use-bundler-when-possible 1)
 (setq rspec-use-rake-when-possible nil)
 
+(require 'auto-complete-config)
+(ac-config-default)
+
+(custom-set-variables
+  '(ac-etags-requires 1))
+
+(eval-after-load "etags"
+  '(progn
+      (ac-etags-setup)))
+
+(add-hook 'ruby-mode-hook 'ac-etags-setup)
+(add-hook 'ruby-mode-hook 'auto-complete-mode)
+
+(require 'eproject)
+(define-project-type rails (generic) (look-for "config.ru"))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; KEY BINDINGS
@@ -116,8 +139,10 @@
 (global-set-key (kbd "C-c k") 'delete-this-buffer-and-file)
 (global-set-key (kbd "C-c m") 'rename-this-buffer-and-file)
 (global-set-key (kbd "C-c f") 'find-grep-dired-do-search)
-(global-set-key (kbd "C-c e") 'eval-buffer)
+(global-set-key (kbd "C-c e") 'eval-region)
+(global-set-key (kbd "C-c b") 'eval-buffer)
 (global-set-key (kbd "C-c r") 'replace-string)
+(global-set-key (kbd "C-c s") 'magit-status)
 (global-set-key (kbd "C-c d") 'remove-dos-eol)
 (global-set-key (kbd "C-x C-b") 'bs-show)
 (global-set-key (kbd "C-M-SPC") 'set-rectangular-region-anchor)
@@ -196,6 +221,22 @@
 ;; Functions I found online
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; from http://mattbriggs.net/blog/2012/03/18/awesome-emacs-plugins-ctags/
+(defun my-find-tag ()
+  (interactive)
+  (if (file-exists-p (concat (eproject-root) "TAGS"))
+      (visit-project-tags)
+    (build-ctags))
+  (etags-select-find-tag-at-point))
+
+(global-set-key (kbd "M-.") 'my-find-tag)
+
+(defun visit-project-tags ()
+  (interactive)
+  (let ((tags-file (concat (eproject-root) "TAGS")))
+    (visit-tags-table tags-file)
+    (message (concat "Loaded " tags-file))))
 
 ;; from http://www.emacswiki.org/emacs/EmacsTags#toc6
 (defun find-file-upwards (file-to-find)
