@@ -16,6 +16,7 @@
   '(ac-etags
     ag
     auto-complete
+    cider
     coffee-mode
     eproject
     etags-table
@@ -105,7 +106,7 @@
 
 (tool-bar-mode -1)
 
-(setq rspec-use-bundler-when-possible 1)
+(setq rspec-use-bundler-when-possible nil)
 (setq rspec-use-rake-when-possible nil)
 
 (require 'auto-complete-config)
@@ -123,6 +124,19 @@
 
 (require 'eproject)
 (define-project-type rails (generic) (look-for "config.ru"))
+
+(defadvice magit-diff (before magit-diff-default-to-head activate)
+  "Offer ...origin/master as first default for magit-diff"
+  (interactive (list (magit-read-rev-range "Diff" "...origin/master"))))
+
+;; Distinguish case in auto-complete mode
+(setq ac-ignore-case nil)
+
+;; Don't autocomplete certain words
+(add-hook 'ruby-mode-hook
+          (lambda ()
+            (make-local-variable 'ac-ignores)
+            (add-to-list 'ac-ignores "end")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -179,6 +193,7 @@
    (string-match "^\\*Messages\\*$" str)
    (string-match "^\\*Completions\\*$" str)
    (string-match "^\\*scratch\\*" str)
+   (string-match "^\\*Flycheck error messages\\*" str)
    (string-match "^ " str)
 
    (memq str
